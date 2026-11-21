@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WinGo 5s-Thinking Master + 100 History | اصف ونگو ایکسپرٹ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap');
+
+        :root {
+            --bg-deep: #030712;
+            --card-glass: rgba(13, 18, 36, 0.96);
+            --white-stroke: rgba(255, 255, 255, 0.85);
+            --accent-cyan: #00f2fe;
+            --accent-purple: #9d4edd;
+            --accent-green: #10b981;
+            --accent-red: #ff3366;
+            --gold: #ffb703;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+        body { background-color: var(--bg-deep); color: var(--text-main); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 6px; }
+
+        .app-card {
+            width: 100%; max-width: 440px; background: var(--card-glass);
+            backdrop-filter: blur(20px); border-radius: 20px; padding: 12px;
+            border: 1.5px solid var(--white-stroke); box-shadow: 0 0 25px rgba(0,242,254,0.18);
+        }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .header-title h1 { font-size: 7.5px; color: #fff; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .telegram-btn { background: #0088cc; color: #fff; font-size: 8px; font-weight: 800; padding: 4px 8px; border-radius: 14px; text-decoration: none; }
+
+        .period-box {
+            background: rgba(3, 7, 18, 0.65); border-radius: 10px; padding: 6px 10px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .timer-container {
+            background: rgba(3, 7, 18, 0.75); border-radius: 10px; padding: 4px 10px; margin-bottom: 6px; border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .timer-clock { font-size: 16px; font-weight: 900; color: var(--accent-green); font-family: monospace; }
+        .brain-badge { font-size: 8px; font-weight: 900; padding: 3px 8px; border-radius: 6px; background: rgba(0, 242, 254, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+
+        .strip-box {
+            background: rgba(3, 7, 18, 0.8); border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 8px; padding: 5px 6px; margin-bottom: 6px; text-align: center;
+        }
+        .strip-title { font-size: 7px; color: var(--text-sub); font-weight: 800; margin-bottom: 3px; display: flex; justify-content: space-between; }
+        .strip-pills { display: flex; justify-content: space-between; gap: 2px; min-height: 20px; }
+        .pill { flex: 1; font-size: 8px; font-weight: 900; padding: 3px 0; border-radius: 4px; color: #000; }
+        .pill-b { background: var(--gold); }
+        .pill-s { background: var(--accent-cyan); }
+
+        .ai-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 6px;
+        }
+        .ai-card {
+            background: rgba(3, 7, 18, 0.8); border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px; padding: 5px 6px; font-size: 7.5px; text-align: left;
+        }
+        .ai-name { color: var(--gold); font-weight: 700; margin-bottom: 1px; display: flex; justify-content: space-between; }
+        .ai-val { color: #fff; font-weight: 900; font-size: 8px; }
+
+        .supervisor-signal-box {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(157, 78, 221, 0.22));
+            border-radius: 14px; padding: 10px; text-align: center; margin-bottom: 6px;
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+        }
+
+        .signal-label { font-size: 8px; color: var(--text-sub); font-weight: 800; letter-spacing: 1px; }
+        .signal-trend {
+            font-size: 28px; font-weight: 900; margin: 3px 0; color: #fff;
+            text-shadow: 0 0 15px rgba(0, 242, 254, 0.7); letter-spacing: 2px;
+        }
+        .signal-trend.green-text { color: var(--accent-green); text-shadow: 0 0 15px rgba(16, 185, 129, 0.7); }
+        .signal-trend.red-text { color: var(--accent-red); text-shadow: 0 0 15px rgba(255, 51, 102, 0.7); }
+        .signal-trend.skip-text { color: var(--gold); text-shadow: 0 0 15px rgba(255, 183, 3, 0.7); }
+        .signal-trend.think-text { color: var(--accent-cyan); font-size: 22px; letter-spacing: 1px; }
+
+        .logic-panel { background: rgba(3, 7, 18, 0.65); border-radius: 10px; padding: 6px 8px; margin-bottom: 6px; border: 1px solid rgba(255, 255, 255, 0.12); }
+        .logic-box { font-size: 8.5px; color: #cbd5e1; line-height: 1.25; background: rgba(15, 23, 42, 0.5); padding: 5px; border-radius: 6px; text-align: left; }
+
+        /* 100-Result History Box */
+        .hist100-box {
+            background: rgba(3, 7, 18, 0.85); border-radius: 10px; padding: 6px; margin-bottom: 6px;
+            border: 1.5px solid rgba(0, 242, 254, 0.35);
+        }
+        .hist100-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; gap: 4px; flex-wrap: wrap;
+        }
+        .hist100-title { font-size: 8px; font-weight: 800; color: var(--accent-cyan); }
+        .filter-btns { display: flex; gap: 3px; }
+        .f-btn {
+            background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px; font-size: 7px; font-weight: 800; padding: 2px 6px; cursor: pointer;
+        }
+        .f-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+        .hist100-grid {
+            display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px;
+            max-height: 130px; overflow-y: auto; padding-right: 1px;
+        }
+        .h-cell {
+            font-size: 7.5px; font-weight: 900; padding: 3px 1px; border-radius: 3px;
+            text-align: center; color: #000; line-height: 1.1;
+        }
+        .h-b { background: var(--gold); }
+        .h-s { background: var(--accent-cyan); }
+        .h-dim { opacity: 0.22; }
+
+        .history-container {
+            background: rgba(3, 7, 18, 0.85); border-radius: 10px; padding: 6px;
+            border: 1.5px solid rgba(255, 183, 3, 0.35); max-height: 140px; overflow-y: auto;
+        }
+
+        .history-table { width: 100%; border-collapse: collapse; font-size: 8px; text-align: center; }
+        .history-table th { color: var(--text-sub); padding: 4px 2px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: sticky; top: 0; background: #030712; }
+        .history-table td { padding: 4px 2px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+
+        .badge-win { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); padding: 1px 4px; border-radius: 3px; font-weight: 800; }
+        .badge-loss { background: rgba(255, 51, 102, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); padding: 1px 4px; border-radius: 3px; font-weight: 800; }
+        .badge-skip { background: rgba(255, 183, 3, 0.2); color: var(--gold); border: 1px solid var(--gold); padding: 1px 4px; border-radius: 3px; font-weight: 800; }
+    </style>
+
+    <!-- Safe Firebase SDKs & Cloud Sync -->
+    <script type="module">
+        try {
+            import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js").then(async ({ initializeApp }) => {
+                const { getFirestore, doc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+
+                const firebaseConfig = {
+                    apiKey: "AIzaSyCLBtPq8xK9COk6GZyC-zHEtLFfW8-qQH0",
+                    authDomain: "ghugh-b4903.firebaseapp.com",
+                    projectId: "ghugh-b4903",
+                    storageBucket: "ghugh-b4903.firebasestorage.app",
+                    messagingSenderId: "960134803091",
+                    appId: "1:960134803091:web:795feeb01f4199bbeee766",
+                    measurementId: "G-N87ZW6067E"
+                };
+
+                const app = initializeApp(firebaseConfig);
+                const db = getFirestore(app);
+
+                let userId = localStorage.getItem("wingo_user_id");
+                if (!userId) {
+                    userId = "User_" + Math.random().toString(36).substring(2, 9);
+                    localStorage.setItem("wingo_user_id", userId);
+                }
+
+                window.syncUserActivityToCloud = async function(historyLogs, totalWins, totalLosses) {
+                    try {
+                        const expireAt = new Date();
+                        expireAt.setDate(expireAt.getDate() + 15);
+
+                        await setDoc(doc(db, "users_activity", userId), {
+                            userId: userId,
+                            lastUpdated: new Date().toISOString(),
+                            expireAt: expireAt.toISOString(),
+                            wins: totalWins,
+                            losses: totalLosses,
+                            history: historyLogs.slice(0, 20)
+                        }, { merge: true });
+                    } catch (e) {}
+                };
+            });
+        } catch (e) {}
+    </script>
+</head>
+<body>
+
+<div class="app-card">
+    <div class="top-bar">
+        <div class="header-title"><h1>5s-Thinking Master + 100 History | اصف ونگو ایکسپرٹ</h1></div>
+        <a href="https://t.me/AsifWingoExperttrick" target="_blank" class="telegram-btn">TELEGRAM</a>
+    </div>
+
+    <div class="period-box">
+        <div><div style="font-size:8px; color:var(--text-sub)">TARGET PERIOD</div><div style="font-size:12px; font-weight:900; color:var(--gold)" id="targetPeriod">----</div></div>
+        <div style="text-align: right;"><div style="font-size:8px; color:var(--text-sub)">LAST RESULT</div><div style="font-size:12px; font-weight:900; color:var(--accent-cyan)" id="lastNum">-</div></div>
+    </div>
+
+    <div class="timer-container">
+        <div class="timer-clock" id="timerClock">00:30</div>
+        <div class="brain-badge" id="activeBrainBadge">ACTIVE: AUTO-SWITCH</div>
+    </div>
+
+    <!-- Bottom-to-Top 10-Draw Sequence Strip -->
+    <div class="strip-box">
+        <div class="strip-title">
+            <span>⬇️ BASE (10th)</span>
+            <span>10-DRAW LIVE SEQUENCE</span>
+            <span>TOP (1st) ⬆️</span>
+        </div>
+        <div class="strip-pills" id="drawStrip"></div>
+    </div>
+
+    <!-- Dual Engine Telemetry -->
+    <div class="ai-grid">
+        <div class="ai-card">
+            <div class="ai-name"><span>📈 TREND VOTE</span></div>
+            <div class="ai-val" id="trendVoteVal">--</div>
+        </div>
+        <div class="ai-card">
+            <div class="ai-name"><span>🧩 SEQ VOTE</span></div>
+            <div class="ai-val" id="seqVoteVal">--</div>
+        </div>
+        <div class="ai-card">
+            <div class="ai-name"><span>🏆 ENGINE SCORE</span></div>
+            <div class="ai-val" id="scoreVal">T:0 | S:0</div>
+        </div>
+        <div class="ai-card">
+            <div class="ai-name" style="color:var(--gold)"><span>📐 RUN SHAPE</span></div>
+            <div class="ai-val" id="runShapeVal">--</div>
+        </div>
+        <div class="ai-card" style="grid-column: span 2;">
+            <div class="ai-name"><span>🧠 MASTER CONTROL STATUS</span><span style="color:var(--accent-green)" id="skipQueueBadge">READY</span></div>
+            <div class="ai-val" id="syncStatusVal">5s Deep Evaluation Ready</div>
+        </div>
+    </div>
+
+    <!-- Master Signal Box -->
+    <div class="supervisor-signal-box">
+        <div class="signal-label" id="signalHeaderLabel">MASTER DUAL-BRAIN DECISION</div>
+        <div class="signal-trend" id="predTrend">BIG</div>
+        <div style="font-size:8.5px; font-weight:800; color:var(--accent-cyan);" id="phaseMode">⚡ Evaluating Trend vs Sequence...</div>
+    </div>
+
+    <div class="logic-panel">
+        <div style="font-size: 8px; color: var(--accent-cyan); font-weight: 800; margin-bottom: 2px;">🧠 5-SECOND THINKING & SELF-SWITCHING LOGIC</div>
+        <div class="logic-box" id="logicBox">> Takes 5 seconds after each result to cross-check Trend & Sequence. Auto-switches if one loses, or skips 1-2 draws when unclear...</div>
+    </div>
+
+    <!-- 100-Result History & Same-Side Filter -->
+    <div class="hist100-box">
+        <div class="hist100-header">
+            <span class="hist100-title" id="hist100Summary">📜 LAST 100 RESULTS (0/100)</span>
+            <div class="filter-btns">
+                <button class="f-btn active" id="btnAll" onclick="setHistFilter('ALL')">ALL 100</button>
+                <button class="f-btn" id="btnBig" onclick="setHistFilter('BIG')">SAME BIG</button>
+                <button class="f-btn" id="btnSmall" onclick="setHistFilter('SMALL')">SAME SMALL</button>
+            </div>
+        </div>
+        <div class="hist100-grid" id="hist100Grid"></div>
+    </div>
+
+    <div class="history-container">
+        <div style="font-size:8.5px; color:var(--text-sub); margin-bottom:4px; display:flex; justify-content:space-between;">
+            <span style="color:var(--gold); font-weight:800;">📊 EXECUTION LOGS</span>
+            <span id="winRateText" style="color:var(--gold)">WIN: 0/0 | SKIP: 0</span>
+        </div>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>PER</th>
+                    <th>RESULT</th>
+                    <th>PREDICT</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+            <tbody id="historyBody">
+                <tr><td colspan="4" style="color:var(--text-sub);">Connecting...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const WINGO_30S_API = "https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json";
+    let totalWins = 0, totalLosses = 0, totalSkipped = 0;
+    let consecutiveLosses = 0;
+    let skipRemaining = 0;
+
+    let trendShadowScore = 0;
+    let seqShadowScore = 0;
+    let lastTrendVote = null;
+    let lastSeqVote = null;
+    let activeEngine = "SYNC";
+
+    let lastPrediction = null, lastProcessedIssue = "", historyLogs = [];
+    let thinkingTimer = null;
+
+    // 100 پچھلے رزلٹس کی کیشے (تاکہ پیچھے 100 تک مکمل ریکارڈ محفوظ رہے)
+    let archive100 = [];
+    let currentHistFilter = "ALL";
+
+    function startTimerEngine() {
+        setInterval(() => {
+            const remSec = 30 - (new Date().getSeconds() % 30);
+            document.getElementById('timerClock').innerText = `00:${remSec < 10 ? '0' : ''}${remSec}`;
+            if (remSec === 29 || remSec === 1 || remSec === 15) runLiveEngine();
+        }, 1000);
+    }
+
+    async function fetchDirectData() {
+        try {
+            const res = await fetch(WINGO_30S_API, { cache: "no-store" });
+            if (res.ok) {
+                const json = await res.json();
+                const arr = json.data?.list || json.list || json.data || [];
+                if (Array.isArray(arr) && arr.length > 0) return arr;
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    function updateArchive100(list) {
+        const mapByIssue = new Map();
+        // پہلے موجودہ محفوظ رزلٹس شامل کریں
+        for (const item of archive100) {
+            mapByIssue.set(item.issue, item);
+        }
+        // پھر تازہ ترین اے پی آئی رزلٹس سب سے اوپر رکھیں
+        const freshItems = [];
+        for (const item of list) {
+            const num = parseInt(item.number ?? item.num ?? item.winningNumber ?? 0);
+            const issue = String(item.issueNumber ?? item.issue ?? item.period ?? Math.random());
+            const side = num >= 5 ? "BIG" : "SMALL";
+            const obj = { issue, num, side };
+            freshItems.push(obj);
+            mapByIssue.delete(issue);
+        }
+        const combined = [...freshItems, ...Array.from(mapByIssue.values())];
+        archive100 = combined.slice(0, 100);
+        renderHistory100();
+    }
+
+    function setHistFilter(mode) {
+        currentHistFilter = mode;
+        document.getElementById('btnAll').classList.toggle('active', mode === 'ALL');
+        document.getElementById('btnBig').classList.toggle('active', mode === 'BIG');
+        document.getElementById('btnSmall').classList.toggle('active', mode === 'SMALL');
+        renderHistory100();
+    }
+
+    function renderHistory100() {
+        const grid = document.getElementById('hist100Grid');
+        if (!grid) return;
+
+        const bigTotal = archive100.filter(x => x.side === "BIG").length;
+        const smallTotal = archive100.length - bigTotal;
+        document.getElementById('hist100Summary').innerText = `📜 HISTORY (${archive100.length}/100) | B:${bigTotal} S:${smallTotal}`;
+
+        grid.innerHTML = archive100.map((item, idx) => {
+            const isMatch = (currentHistFilter === "ALL") || (currentHistFilter === item.side);
+            const cls = item.side === "BIG" ? "h-b" : "h-s";
+            const dimClass = isMatch ? "" : "h-dim";
+            const shortPer = item.issue.slice(-3);
+            return `<div class="h-cell ${cls} ${dimClass}" title="#${idx + 1} | Per:${shortPer} | ${item.num} (${item.side})">${item.num}${item.side[0]}</div>`;
+        }).join('');
+    }
+
+    /* 🧠 ACCURATE DUAL ENGINE ANALYZER */
+    function evaluateMasterControl(list) {
+        if (!list || list.length < 4) {
+            return { decision: "BIG", phase: "Syncing Feed...", reason: "Collecting live draws...", isSkip: false };
+        }
+
+        const count = Math.min(list.length, 10);
+        const topNums = list.slice(0, count).map(i => parseInt(i.number ?? i.num ?? i.winningNumber ?? 0));
+        const topSizes = topNums.map(n => (n >= 5 ? "BIG" : "SMALL"));
+
+        const seq = [...topSizes].reverse();
+        const seqNums = [...topNums].reverse();
+        const flip = (s) => (s === "BIG" ? "SMALL" : "BIG");
+
+        document.getElementById('drawStrip').innerHTML = seq.map((sz, idx) => {
+            return `<div class="pill ${sz === 'BIG' ? 'pill-b' : 'pill-s'}">${seqNums[idx]}${sz[0]}</div>`;
+        }).join('');
+
+        const runs = [];
+        for (let i = 0; i < seq.length; i++) {
+            if (runs.length === 0 || runs[runs.length - 1].side !== seq[i]) {
+                runs.push({ side: seq[i], len: 1 });
+            } else {
+                runs[runs.length - 1].len++;
+            }
+        }
+        const runShapeStr = runs.map(r => `${r.len}${r.side[0]}`).join("-");
+        const currRun = runs[runs.length - 1];
+        const prevRun = runs.length >= 2 ? runs[runs.length - 2] : null;
+        const prev2Run = runs.length >= 3 ? runs[runs.length - 3] : null;
+
+        const latestStreak = currRun.len;
+        const latestSide = currRun.side;
+
+        const bigCount = topSizes.filter(x => x === "BIG").length;
+        const smallCount = topSizes.length - bigCount;
+
+        const mid = Math.floor(seq.length / 2);
+        const lowerBig = seq.slice(0, mid).filter(x => x === "BIG").length;
+        const upperBig = seq.slice(mid).filter(x => x === "BIG").length;
+
+        let trendVote = latestSide;
+        let trendReason = "";
+
+        if (latestStreak >= 3 && latestStreak <= 5) {
+            trendVote = latestSide;
+            trendReason = `${latestStreak}x ${latestSide} Trend`;
+        } else if (latestStreak >= 6) {
+            trendVote = flip(latestSide);
+            trendReason = `${latestStreak}x Turn -> ${trendVote}`;
+        } else if (upperBig > lowerBig) {
+            trendVote = "BIG";
+            trendReason = `Up BIG (${lowerBig}➔${upperBig})`;
+        } else if (upperBig < lowerBig) {
+            trendVote = "SMALL";
+            trendReason = `Up SMALL (${mid - lowerBig}➔${(seq.length - mid) - upperBig})`;
+        } else {
+            trendVote = bigCount >= smallCount ? "BIG" : "SMALL";
+            trendReason = `Balance (${bigCount}B/${smallCount}S)`;
+        }
+
+        let seqVote = flip(latestSide);
+        let seqReason = "";
+        let isClearSequence = false;
+
+        if (runs.length >= 3 && currRun.len === 1 && prevRun.len === 1 && prev2Run && prev2Run.len === 1) {
+            seqVote = flip(latestSide);
+            seqReason = "1-1 ZigZag Flip";
+            isClearSequence = true;
+        }
+        else if (runs.length >= 2 && currRun.len === 2 && prevRun.len === 2) {
+            seqVote = flip(latestSide);
+            seqReason = "2-2 Pair Flip";
+            isClearSequence = true;
+        }
+        else if (currRun.len === 1 && prevRun && prevRun.len >= 2) {
+            seqVote = latestSide;
+            seqReason = `Build 2 (${latestSide})`;
+            isClearSequence = true;
+        }
+        else if (currRun.len === 2 && prevRun && prevRun.len === 1) {
+            seqVote = flip(latestSide);
+            seqReason = "1-2 Break";
+            isClearSequence = true;
+        }
+        else {
+            seqVote = flip(latestSide);
+            seqReason = "Seq Shift";
+            isClearSequence = false;
+        }
+
+        lastTrendVote = trendVote;
+        lastSeqVote = seqVote;
+
+        let finalDecision = trendVote;
+        let isSkip = false;
+        let controlMode = "SYNC";
+        let phaseNote = "";
+
+        if (skipRemaining > 0) {
+            isSkip = true;
+            skipRemaining--;
+            controlMode = "SKIP GUARD";
+            finalDecision = "SKIP ⏸️";
+            phaseNote = `⏸️ Smart Skip Active (${skipRemaining + 1} skip left to protect capital)`;
+        }
+        else if (consecutiveLosses >= 2 || (trendShadowScore <= -2 && seqShadowScore <= -2)) {
+            skipRemaining = 1;
+            isSkip = true;
+            controlMode = "SKIP GUARD";
+            finalDecision = "SKIP ⏸️";
+            phaseNote = `🛡️ Market Choppy / Loss Guard: Skipping 2 Draws to reset`;
+            consecutiveLosses = 0;
+        }
+        else if (trendVote === seqVote) {
+            finalDecision = trendVote;
+            controlMode = "100% SYNC";
+            phaseNote = `🔥 PLAY ${finalDecision} | Trend & Sequence Agree (${runShapeStr})`;
+        }
+        else {
+            if (!isClearSequence && latestStreak === 1 && trendShadowScore <= 0 && seqShadowScore <= 0) {
+                isSkip = true;
+                controlMode = "SKIP GUARD";
+                finalDecision = "SKIP ⏸️";
+                phaseNote = `🤔 Unclear Pattern (${runShapeStr}) -> Skipping 1 Draw`;
+            } else if (seqShadowScore > trendShadowScore) {
+                finalDecision = seqVote;
+                controlMode = "SEQUENCE";
+                phaseNote = `🧩 PLAY ${finalDecision} | Switched to SEQUENCE (${seqReason}) [T:${trendShadowScore} | S:${seqShadowScore}]`;
+            } else if (trendShadowScore > seqShadowScore) {
+                finalDecision = trendVote;
+                controlMode = "TREND";
+                phaseNote = `📈 PLAY ${finalDecision} | Switched to TREND (${trendReason}) [T:${trendShadowScore} | S:${seqShadowScore}]`;
+            } else {
+                finalDecision = isClearSequence ? seqVote : trendVote;
+                controlMode = isClearSequence ? "SEQUENCE" : "TREND";
+                phaseNote = `🎯 PLAY ${finalDecision} | ${controlMode} (${isClearSequence ? seqReason : trendReason})`;
+            }
+        }
+
+        activeEngine = controlMode;
+
+        document.getElementById('trendVoteVal').innerText = `${trendVote} (${trendReason})`;
+        document.getElementById('seqVoteVal').innerText = `${seqVote} (${seqReason})`;
+        document.getElementById('scoreVal').innerText = `T:${trendShadowScore} | S:${seqShadowScore}`;
+        document.getElementById('runShapeVal').innerText = runShapeStr;
+        document.getElementById('activeBrainBadge').innerText = `MODE: ${controlMode}`;
+        document.getElementById('skipQueueBadge').innerText = isSkip ? "SKIPPING" : "PLAY";
+        document.getElementById('syncStatusVal').innerText = isSkip ? "Skip Guard Active" : `${controlMode} -> ${finalDecision}`;
+
+        return {
+            decision: finalDecision,
+            phase: phaseNote,
+            reason: `Seq [${runShapeStr}] | Trend -> ${trendVote} (${trendReason}) | Seq -> ${seqVote} (${seqReason}) | Score T:${trendShadowScore}, S:${seqShadowScore} -> ${finalDecision}.`,
+            isSkip: isSkip
+        };
+    }
+
+    function trigger5SecondThinking(list) {
+        if (thinkingTimer) clearInterval(thinkingTimer);
+
+        const predElem = document.getElementById('predTrend');
+        const phaseElem = document.getElementById('phaseMode');
+        const headerElem = document.getElementById('signalHeaderLabel');
+        const logicElem = document.getElementById('logicBox');
+
+        let secLeft = 5;
+        headerElem.innerText = "🧠 DEEP ANALYZING TREND & SEQUENCE...";
+        predElem.className = "signal-trend think-text";
+        predElem.innerText = `THINKING (${secLeft}s)`;
+        phaseElem.innerText = "⏳ Checking Trend Score, Sequence Shape & Market Clarity...";
+        logicElem.innerText = "> Comparing Trend vs Sequence accuracy over recent draws before locking signal...";
+
+        thinkingTimer = setInterval(() => {
+            secLeft--;
+            if (secLeft > 0) {
+                predElem.innerText = `THINKING (${secLeft}s)`;
+            } else {
+                clearInterval(thinkingTimer);
+                thinkingTimer = null;
+
+                const evalResult = evaluateMasterControl(list);
+                headerElem.innerText = "MASTER DUAL-BRAIN DECISION";
+                predElem.innerText = evalResult.decision;
+                phaseElem.innerText = evalResult.phase;
+
+                predElem.className = "signal-trend";
+                if (evalResult.isSkip) {
+                    predElem.classList.add('skip-text');
+                } else if (evalResult.decision === "BIG") {
+                    predElem.classList.add('green-text');
+                } else {
+                    predElem.classList.add('red-text');
+                }
+
+                logicElem.innerText = evalResult.reason;
+                lastPrediction = evalResult.decision;
+            }
+        }, 1000);
+    }
+
+    async function runLiveEngine() {
+        const list = await fetchDirectData();
+        if (!list || list.length === 0) return;
+
+        updateArchive100(list);
+
+        const latest = list[0];
+        const lastNum = parseInt(latest.number ?? latest.num ?? latest.winningNumber ?? 0);
+        const lastIssue = String(latest.issueNumber ?? latest.issue ?? latest.period ?? "");
+        const actualSize = lastNum >= 5 ? "BIG" : "SMALL";
+
+        if (lastIssue && lastIssue === lastProcessedIssue) return;
+        if (lastIssue) lastProcessedIssue = lastIssue;
+
+        document.getElementById('lastNum').innerText = `${lastNum} (${actualSize})`;
+
+        try {
+            if (lastIssue) {
+                document.getElementById('targetPeriod').innerText = (BigInt(lastIssue) + 1n).toString().slice(-4);
+            }
+        } catch(e) { document.getElementById('targetPeriod').innerText = "NEXT"; }
+
+        if (lastTrendVote !== null) {
+            if (lastTrendVote === actualSize) trendShadowScore++;
+            else trendShadowScore = Math.max(-3, trendShadowScore - 1);
+        }
+        if (lastSeqVote !== null) {
+            if (lastSeqVote === actualSize) seqShadowScore++;
+            else seqShadowScore = Math.max(-3, seqShadowScore - 1);
+        }
+
+        if (lastPrediction !== null) {
+            let status = "";
+            if (lastPrediction.includes("SKIP")) {
+                status = "SKIPPED";
+                totalSkipped++;
+            } else {
+                let isWin = (actualSize === lastPrediction);
+                if (isWin) {
+                    status = "WIN";
+                    totalWins++;
+                    consecutiveLosses = 0;
+                } else {
+                    status = "LOSS";
+                    totalLosses++;
+                    consecutiveLosses++;
+                }
+            }
+
+            historyLogs.unshift({
+                issue: lastIssue || "----", actual: `${lastNum} (${actualSize})`,
+                pred: lastPrediction, status: status
+            });
+
+            document.getElementById('historyBody').innerHTML = historyLogs.map(item => {
+                let badgeClass = 'badge-skip';
+                if (item.status === 'WIN') badgeClass = 'badge-win';
+                if (item.status === 'LOSS') badgeClass = 'badge-loss';
+                return `
+                <tr>
+                    <td style="color:var(--text-sub)">${item.issue.slice(-4)}</td>
+                    <td><b>${item.actual}</b></td>
+                    <td style="font-weight:bold">${item.pred}</td>
+                    <td><span class="${badgeClass}">${item.status}</span></td>
+                </tr>
+                `;
+            }).join('');
+
+            let played = totalWins + totalLosses;
+            let rate = played > 0 ? ((totalWins / played) * 100).toFixed(1) : "0.0";
+            document.getElementById('winRateText').innerText = `WIN: ${totalWins}/${played} (${rate}%) | SKIP: ${totalSkipped}`;
+
+            if (typeof window.syncUserActivityToCloud === 'function') {
+                window.syncUserActivityToCloud(historyLogs, totalWins, totalLosses);
+            }
+        }
+
+        trigger5SecondThinking(list);
+    }
+
+    startTimerEngine();
+    runLiveEngine();
+</script>
+
+</body>
+</html>
